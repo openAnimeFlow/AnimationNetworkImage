@@ -5,25 +5,17 @@ class TransparentImageRoute extends PageRouteBuilder {
   final String imageUrl;
   final String heroTag;
 
-  TransparentImageRoute({
-    required this.imageUrl,
-    required this.heroTag,
-  }) : super(
-    opaque: false, // 允许看到下层页面
-    barrierColor: Colors.black.withValues(alpha: 0.2),
-    pageBuilder: (_, __, ___) {
-      return ImagePreviewPage(
-        imageUrl: imageUrl,
-        heroTag: heroTag,
+  TransparentImageRoute({required this.imageUrl, required this.heroTag})
+    : super(
+        opaque: false, // 允许看到下层页面
+        barrierColor: Colors.black.withValues(alpha: 0.2),
+        pageBuilder: (_, __, ___) {
+          return ImagePreviewPage(imageUrl: imageUrl, heroTag: heroTag);
+        },
+        transitionsBuilder: (_, animation, __, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
       );
-    },
-    transitionsBuilder: (_, animation, __, child) {
-      return FadeTransition(
-        opacity: animation,
-        child: child,
-      );
-    },
-  );
 }
 
 class ImagePreviewPage extends StatefulWidget {
@@ -98,15 +90,21 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
               tag: widget.heroTag,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: PhotoView(
-                  controller: _photoViewController,
-                  imageProvider: NetworkImage(widget.imageUrl),
-                  backgroundDecoration:
-                  const BoxDecoration(color: Colors.transparent),
-                  minScale: PhotoViewComputedScale.contained,
-                  maxScale: PhotoViewComputedScale.covered * 3,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: PhotoView(
+                    controller: _photoViewController,
+                    imageProvider: NetworkImage(widget.imageUrl),
+                    backgroundDecoration: const BoxDecoration(
+                      color: Colors.transparent,
+                    ),
+                    minScale: PhotoViewComputedScale.contained,
+                    maxScale: PhotoViewComputedScale.covered * 3,
+                  ),
                 ),
-              )
+              ),
             ),
           ),
         ),
