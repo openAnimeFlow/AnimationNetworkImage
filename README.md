@@ -27,7 +27,9 @@ AnimationNetworkImage 是一个基于 [cached_network_image](https://pub.dev/pac
 ```yaml
 dependencies:
   animation_network_image:
-    path: .
+  git:
+    url: https://github.com/openAnimeFlow/AnimationNetworkImage.git
+    ref: main
 ```
 
 然后运行：
