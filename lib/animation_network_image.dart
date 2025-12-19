@@ -1,27 +1,47 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import 'image_preview_page.dart';
+
 class AnimationNetworkImage extends StatelessWidget {
   final String url;
   final BoxFit? fit;
   final double? width;
   final double? height;
+  final bool preview;
   final Duration fadeInDuration;
   final Duration fadeOutDuration;
   final BorderRadiusGeometry borderRadius;
 
-  const AnimationNetworkImage(
-      {super.key,
-        required this.url,
-        this.fit,
-        this.width,
-        this.height,
-        this.borderRadius = BorderRadius.zero,
-        this.fadeInDuration = const Duration(milliseconds: 500),
-        this.fadeOutDuration = const Duration(milliseconds: 300)});
+  const AnimationNetworkImage({
+    super.key,
+    required this.url,
+    this.fit,
+    this.width,
+    this.height,
+    this.preview = false,
+    this.borderRadius = BorderRadius.zero,
+    this.fadeInDuration = const Duration(milliseconds: 500),
+    this.fadeOutDuration = const Duration(milliseconds: 300),
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (preview) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(
+            context,
+          ).push(TransparentImageRoute(imageUrl: url, heroTag: url));
+        },
+        child: Hero(tag: url, child: _buildImage()),
+      );
+    } else {
+      return _buildImage();
+    }
+  }
+
+  Widget _buildImage() {
     return ClipRRect(
       borderRadius: borderRadius,
       child: CachedNetworkImage(
@@ -64,10 +84,7 @@ class _ShimmerLoadingState extends State<_ShimmerLoading>
     )..repeat(); // 循环播放动画
 
     _animation = Tween<double>(begin: -1.0, end: 2.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
 
@@ -95,16 +112,8 @@ class _ShimmerLoadingState extends State<_ShimmerLoading>
                 _animation.value + 0.3,
               ].map((stop) => stop.clamp(0.0, 1.0)).toList(),
               colors: isDark
-                  ? [
-                Colors.grey[850]!,
-                Colors.grey[700]!,
-                Colors.grey[850]!,
-              ]
-                  : [
-                Colors.grey[300]!,
-                Colors.grey[100]!,
-                Colors.grey[300]!,
-              ],
+                  ? [Colors.grey[850]!, Colors.grey[700]!, Colors.grey[850]!]
+                  : [Colors.grey[300]!, Colors.grey[100]!, Colors.grey[300]!],
             ),
           ),
         );
