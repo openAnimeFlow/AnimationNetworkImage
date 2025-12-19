@@ -83,30 +83,46 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                 }
               }
             : null,
-        child: Center(
-          child: Transform.translate(
-            offset: Offset(0, _dragOffset),
-            child: Hero(
-              tag: widget.heroTag,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: PhotoView(
-                    controller: _photoViewController,
-                    imageProvider: NetworkImage(widget.imageUrl),
-                    backgroundDecoration: const BoxDecoration(
-                      color: Colors.transparent,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Center(
+                child: Transform.translate(
+                  offset: Offset(0, _dragOffset),
+                  child: Hero(
+                    tag: widget.heroTag,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: PhotoView(
+                          controller: _photoViewController,
+                          imageProvider: NetworkImage(widget.imageUrl),
+                          backgroundDecoration: const BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          minScale: PhotoViewComputedScale.contained,
+                          maxScale: PhotoViewComputedScale.covered * 3,
+                        ),
+                      ),
                     ),
-                    minScale: PhotoViewComputedScale.contained,
-                    maxScale: PhotoViewComputedScale.covered * 3,
                   ),
                 ),
               ),
             ),
-          ),
+            Positioned(
+              top: 5,
+              left: 5,
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.close_rounded),
+              ),
+            ),
+          ],
         ),
       ),
     );
