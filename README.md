@@ -1,6 +1,6 @@
 # Animation Network Image
 
-一个带有渐变加载动画效果的 Flutter 网络图片组件。
+一个带有阅览、渐变加载动画效果的 Flutter 网络图片组件。
 
 ## 简介
 
@@ -11,6 +11,7 @@ AnimationNetworkImage 是一个基于 [cached_network_image](https://pub.dev/pac
 - 加载错误时的占位文本显示
 - 可自定义的圆角边框
 - 可配置的淡入淡出动画时长
+- 图片预览功能（点击放大查看）
 
 ## 功能特点
 
@@ -19,6 +20,7 @@ AnimationNetworkImage 是一个基于 [cached_network_image](https://pub.dev/pac
 3. **错误处理**: 提供加载失败时的错误提示
 4. **样式定制**: 支持设置图片尺寸、填充模式、圆角等属性
 5. **主题适配**: 自动适配深色/浅色主题的加载动画颜色
+6. **图片预览**: 支持点击图片进行全屏预览，支持手势缩放和拖拽关闭
 
 ## 安装
 
@@ -26,10 +28,17 @@ AnimationNetworkImage 是一个基于 [cached_network_image](https://pub.dev/pac
 
 ```yaml
 dependencies:
+  animation_network_image: ^1.0.0
+```
+
+或者使用Git依赖：
+
+```yaml
+dependencies:
   animation_network_image:
-  git:
-    url: https://github.com/openAnimeFlow/AnimationNetworkImage.git
-    ref: main
+    git:
+      url: https://github.com/openAnimeFlow/AnimationNetworkImage.git
+      ref: main
 ```
 
 然后运行：
@@ -50,6 +59,15 @@ AnimationNetworkImage(
 )
 ```
 
+### 启用预览功能
+
+```dart
+AnimationNetworkImage(
+  url: 'https://example.com/image.jpg',
+  preview: true, // 启用预览功能
+)
+```
+
 ### 自定义参数
 
 ```dart
@@ -61,6 +79,7 @@ AnimationNetworkImage(
   borderRadius: BorderRadius.circular(12),
   fadeInDuration: Duration(milliseconds: 300),
   fadeOutDuration: Duration(milliseconds: 200),
+  preview: true, // 启用预览功能
 )
 ```
 
@@ -75,6 +94,7 @@ AnimationNetworkImage(
 | borderRadius | BorderRadiusGeometry | BorderRadius.zero | 图片圆角 |
 | fadeInDuration | Duration | Duration(milliseconds: 500) | 淡入动画时长 |
 | fadeOutDuration | Duration | Duration(milliseconds: 300) | 淡出动画时长 |
+| preview | bool | false | 是否启用预览功能 |
 
 ## 示例项目
 
@@ -90,14 +110,27 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: Text('Animation Network Image Demo')),
-        body: Center(
-          child: AnimationNetworkImage(
-            url: 'https://example.com/image.jpg',
-            width: 200,
-            height: 200,
-            fit: BoxFit.cover,
-            borderRadius: BorderRadius.circular(12),
-          ),
+        body: Column(
+          children: [
+            // 基本使用
+            AnimationNetworkImage(
+              url: 'https://example.com/image.jpg',
+              width: 200,
+              height: 200,
+              fit: BoxFit.cover,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            
+            // 带预览功能
+            AnimationNetworkImage(
+              url: 'https://example.com/image2.jpg',
+              width: 200,
+              height: 200,
+              fit: BoxFit.cover,
+              borderRadius: BorderRadius.circular(12),
+              preview: true, // 启用预览功能
+            ),
+          ],
         ),
       ),
     );
@@ -108,6 +141,7 @@ class MyApp extends StatelessWidget {
 ## 依赖项
 
 - [cached_network_image](https://pub.dev/packages/cached_network_image) ^3.4.1
+- [photo_view](https://pub.dev/packages/photo_view) ^0.15.0
 
 ## 许可证
 
