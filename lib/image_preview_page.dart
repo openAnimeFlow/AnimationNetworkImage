@@ -119,7 +119,7 @@ class _ImagePreviewPageState extends State<ImagePreviewPage> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.close_rounded),
+                icon: Icon(Icons.close_rounded,color: Colors.white.withValues(alpha: bgOpacity * 0.8),),
               ),
             ),
           ],
