@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -28,13 +30,12 @@ class AnimationNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (preview) {
+      final heroTag = 'emoji_${url.hashCode}_${Random().nextInt(10000)}';
       return GestureDetector(
         onTap: () {
-          Navigator.of(
-            context,
-          ).push(TransparentImageRoute(imageUrl: url, heroTag: url));
+          ImageViewer.show(context, url,heroTag:  heroTag);
         },
-        child: Hero(tag: url, child: _buildImage()),
+        child: Hero(tag: heroTag, child: _buildImage()),
       );
     } else {
       return _buildImage();
